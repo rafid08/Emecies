@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_call_center"
+            android:icon="@drawable/nav_call_ic"
+            android:title="Call Centers" />
+        <item
+            android:id="@+id/nav_ambulance"
+            android:icon="@drawable/ambulance_nav_icon"
+            android:title="Ambulance Services" />
+        <item
+            android:id="@+id/nav_fire"
+            android:icon="@drawable/fire_nav_icon"
+            android:title="Fire Services" />
+        <item
+            android:id="@+id/nav_police"
+            android:icon="@drawable/police_nav_i"
+            android:title="Police Stations" />
+    </group>
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_exit"
+                android:icon="@drawable/exit_icon"
+                android:title="Exit" />
+        </menu>
+    </item>
+
+</menu>

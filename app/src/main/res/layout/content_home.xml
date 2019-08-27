@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".Home"
+    tools:showIn="@layout/app_bar_home">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#e6e4e4">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_weight="1"
+                    android:background="#fff">
+
+                    <LinearLayout
+                        android:onClick="OpenCall"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:paddingTop="8dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="98dp"
+                            android:layout_height="98dp"
+                            android:layout_margin="8dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/call_center_icon"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Call Centers"
+                            android:textColor="#000"
+                            android:textSize="24sp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_gravity="center_horizontal"/>
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_weight="1"
+                    android:background="#fff">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:paddingTop="8dp"
+                        android:orientation="vertical"
+                        android:onClick="OpenAmbulance">
+
+                        <ImageView
+                            android:layout_width="98dp"
+                            android:layout_height="98dp"
+                            android:layout_margin="8dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/ambulance_icon"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ambulace\nNumbers"
+                            android:textAlignment="center"
+                            android:textColor="#000"
+                            android:textSize="24sp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_gravity="center_horizontal"/>
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_weight="1"
+                    android:background="#fff">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:paddingTop="8dp"
+                        android:orientation="vertical"
+                        android:onClick="OpenPolice">
+
+                        <ImageView
+                            android:layout_width="98dp"
+                            android:layout_height="98dp"
+                            android:layout_margin="8dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/police_icon"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Police Station\nNumbers"
+                            android:textAlignment="center"
+                            android:textColor="#000"
+                            android:textSize="24sp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_gravity="center_horizontal"/>
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_weight="1"
+                    android:background="#fff">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:paddingTop="8dp"
+                        android:onClick="OpenFire"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="98dp"
+                            android:layout_height="98dp"
+                            android:layout_margin="8dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/fireservice_icon"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Fire Service\nNumbers"
+                            android:textAlignment="center"
+                            android:textColor="#000"
+                            android:textSize="24sp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_gravity="center_horizontal"/>
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>
