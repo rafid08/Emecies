@@ -1,52 +1,82 @@
 {
   "project_info": {
-    "project_number": "516266822440",
-    "firebase_url": "https://hip-phoenix-230211.firebaseio.com",
-    "project_id": "hip-phoenix-230211",
-    "storage_bucket": "hip-phoenix-230211.appspot.com"
+    "project_number": "933737514239",
+    "firebase_url": "https://database-practice-7a076.firebaseio.com",
+    "project_id": "database-practice-7a076",
+    "storage_bucket": "database-practice-7a076.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:516266822440:android:e690039f78d57df2",
+        "mobilesdk_app_id": "1:933737514239:android:67bc2bf8e9e8cbe04b78ca",
+        "android_client_info": {
+          "package_name": "com.example.emeciesdeveloper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "933737514239-5ilbvjnm1p5jh0cjf717co9j2mlc037n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.emeciesdeveloper",
+            "certificate_hash": "ed2a6f6a2cafc42cf7c7f42a7ea55ed4301efd40"
+          }
+        },
+        {
+          "client_id": "933737514239-fqgvt1dj1gmou0v6vvo0jgtvp7bnoni6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKkQ6CIOdDZm8DD9zD3yL3PUvmN6yTRiM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "933737514239-fqgvt1dj1gmou0v6vvo0jgtvp7bnoni6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:933737514239:android:d5431c17708d5ebd4b78ca",
         "android_client_info": {
           "package_name": "com.rapplis.android.emecies"
         }
       },
       "oauth_client": [
         {
-          "client_id": "516266822440-juto4hr5oi22gmm4oeeu8r9e63fetkbp.apps.googleusercontent.com",
+          "client_id": "933737514239-iva4ncqf3me70c9qbb5tpnsucn5aqgl6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.rapplis.android.emecies",
-            "certificate_hash": "d743bc872efa96a789126dd375358f96a647f2b9"
+            "certificate_hash": "ed2a6f6a2cafc42cf7c7f42a7ea55ed4301efd40"
           }
         },
         {
-          "client_id": "516266822440-jebndjk3bdp73ur5nrlf1te44j3rmu5t.apps.googleusercontent.com",
+          "client_id": "933737514239-fqgvt1dj1gmou0v6vvo0jgtvp7bnoni6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCmAuHSjvJcV7oJpxgLNj30S4RaMXc0-rE"
+          "current_key": "AIzaSyBKkQ6CIOdDZm8DD9zD3yL3PUvmN6yTRiM"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "516266822440-jebndjk3bdp73ur5nrlf1te44j3rmu5t.apps.googleusercontent.com",
+              "client_id": "933737514239-fqgvt1dj1gmou0v6vvo0jgtvp7bnoni6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

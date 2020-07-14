@@ -5,21 +5,13 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_call_center"
-            android:icon="@drawable/nav_call_ic"
-            android:title="Call Centers" />
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="Main Menu" />
         <item
-            android:id="@+id/nav_ambulance"
-            android:icon="@drawable/ambulance_nav_icon"
-            android:title="Ambulance Services" />
-        <item
-            android:id="@+id/nav_fire"
-            android:icon="@drawable/fire_nav_icon"
-            android:title="Fire Services" />
-        <item
-            android:id="@+id/nav_police"
-            android:icon="@drawable/police_nav_i"
-            android:title="Police Stations" />
+            android:id="@+id/nav_update"
+            android:icon="@android:drawable/stat_notify_sync"
+            android:title="Check for updates" />
     </group>
 
     <item android:title="">

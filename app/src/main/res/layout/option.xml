@@ -25,8 +25,7 @@
                     android:id="@+id/cover"
                     android:layout_width="match_parent"
                     android:layout_height="148dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/dhaka_medical_cover"/>
+                    android:scaleType="fitXY"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -42,8 +41,7 @@
                         android:layout_marginRight="8dp"
                         android:layout_marginTop="8dp"
                         android:scaleType="fitXY"
-                        android:background="#fff"
-                        android:src="@drawable/dhaka_medical" />
+                        android:background="#fff" />
 
                     <TextView
                         android:id="@+id/option_title"
@@ -107,7 +105,7 @@
 
                 </LinearLayout>
 
-                <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
+                <com.google.android.material.floatingactionbutton.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/call"
                     android:layout_width="86dp"
                     android:layout_height="86dp"

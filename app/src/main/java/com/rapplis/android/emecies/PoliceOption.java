@@ -1,17 +1,17 @@
 package com.rapplis.android.emecies;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.telephony.TelephonyManager;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -42,24 +42,24 @@ public class PoliceOption extends FragmentActivity implements OnMapReadyCallback
 
         PoliceList police = new PoliceList();
         final String titleText = police.title();
-        int iconImage = police.icon();
-        int coverImage = police.setCover();
+        byte[] iconImage = police.icon();
+        byte[] coverImage = police.setCover();
         final String phoneNum = police.setPhone();
-        lat = police.setLat();
-        lon = police.setLon();
+        lat = Double.parseDouble(police.setLat());
+        lon = Double.parseDouble(police.setLon());
         label = police.title();
 
         TextView title = (TextView) findViewById(R.id.option_title);
         title.setText(titleText);
 
         ImageView icon = (ImageView) findViewById(R.id.option_icon);
-        icon.setImageResource(iconImage);
+        icon.setImageBitmap(getImage(iconImage));
 
         TextView phone = (TextView) findViewById(R.id.phone);
         phone.setText(phoneNum);
 
         ImageView cover = (ImageView) findViewById(R.id.cover);
-        cover.setImageResource(coverImage);
+        cover.setImageBitmap(getImage(coverImage));
 
         Button openMaps = (Button) findViewById(R.id.map_launch);
         openMaps.setOnClickListener(new View.OnClickListener() {
@@ -121,5 +121,9 @@ public class PoliceOption extends FragmentActivity implements OnMapReadyCallback
         {
             return false;
         }
+    }
+
+    public static Bitmap getImage(byte[] image) {
+        return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
 }

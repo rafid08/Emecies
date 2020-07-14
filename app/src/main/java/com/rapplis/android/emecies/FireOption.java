@@ -1,9 +1,11 @@
 package com.rapplis.android.emecies;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,8 +21,8 @@ public class FireOption extends AppCompatActivity {
 
         FireList fire = new FireList();
         final String titleText = fire.title();
-        int iconImage = fire.icon();
-        int coverImage = fire.setCover();
+        byte[] iconImage = fire.icon();
+        byte[] coverImage = fire.setCover();
         final String phoneNum = fire.setPhone();
         String finalTitle;
 
@@ -33,13 +35,13 @@ public class FireOption extends AppCompatActivity {
         title.setText(finalTitle);
 
         ImageView icon = (ImageView) findViewById(R.id.option_icon);
-        icon.setImageResource(iconImage);
+        icon.setImageBitmap(getImage(iconImage));
 
         TextView phone = (TextView) findViewById(R.id.phone);
         phone.setText(phoneNum);
 
         ImageView cover = (ImageView) findViewById(R.id.cover);
-        cover.setImageResource(coverImage);
+        cover.setImageBitmap(getImage(coverImage));
 
         LinearLayout mapTab = (LinearLayout) findViewById(R.id.maptab);
         mapTab.setVisibility(View.GONE);
@@ -52,5 +54,9 @@ public class FireOption extends AppCompatActivity {
                 startActivity(call);
             }
         });
+    }
+
+    public static Bitmap getImage(byte[] image) {
+        return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
 }

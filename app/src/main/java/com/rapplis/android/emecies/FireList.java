@@ -1,7 +1,10 @@
 package com.rapplis.android.emecies;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,12 +13,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.rapplis.android.emecies.Data.DataContract;
+import com.rapplis.android.emecies.Data.DatabaseHelper;
+
 import java.util.ArrayList;
 
 public class FireList extends AppCompatActivity {
     private static String title;
-    private static int icon;
-    private static int cover;
+    private static byte[] icon;
+    private static byte[] cover;
     private static String phone;
 
     @Override
@@ -23,26 +29,51 @@ public class FireList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list);
 
+        DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                DataContract.DataEntry.COLUMN_NAME,
+                DataContract.DataEntry.COLUMN_PHONE,
+                DataContract.DataEntry.COLUMN_PROFILE_IMAGE,
+                DataContract.DataEntry.COLUMN_COVER_IMAGE};
+
+        Cursor cursor = db.query(
+                DataContract.DataEntry.FIRE_SERVICE_TABLE_NAME,   // The table to query
+                projection,            // The columns to return
+                null,                  // The columns for the WHERE clause
+                null,                  // The values for the WHERE clause
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // The sort order
+
         final ArrayList<List> lists = new ArrayList<>();
-        lists.add(new List("Fire Brigade Enquiry", R.drawable.firebrigade_icon, R.drawable.firebrigade_cover, "199", 0, 0));
-        lists.add(new List("Head Quarter", R.drawable.firebrigade_icon, R.drawable.firebrigade_cover, "02-9555555", 0, 0));
-        lists.add(new List("Demra", R.drawable.firebrigade_icon, R.drawable.firebrigade_cover, "02-9715575", 0, 0));
-        lists.add(new List("Dhaka Cantt.(Kurmitola)", R.drawable.firebrigade_icon, R.drawable.firebrigade_cover, "02-605168", 0, 0));
-        lists.add(new List("Hajigonj", R.drawable.firebrigade_icon, R.drawable.firebrigade_cover, "02-9715531", 0, 0));
-        lists.add(new List("Khilgaon", R.drawable.firebrigade_icon, R.drawable.firebrigade_cover, "02-7218329", 0, 0));
-        lists.add(new List("Mirpur-10 (Circle)", R.drawable.firebrigade_icon, R.drawable.firebrigade_cover, "02-9001055", 0, 0));
-        lists.add(new List("Mirpur Training Complex", R.drawable.firebrigade_icon, R.drawable.firebrigade_cover, "02-9001189", 0, 0));
-        lists.add(new List("Mohammadpur", R.drawable.firebrigade_icon, R.drawable.firebrigade_cover, "02-9112078", 0, 0));
-        lists.add(new List("Polashi", R.drawable.firebrigade_icon, R.drawable.firebrigade_cover, "02-509670", 0, 0));
-        lists.add(new List("Sadarghat", R.drawable.firebrigade_icon, R.drawable.firebrigade_cover, "02-7119759", 0, 0));
-        lists.add(new List("Tejgaon", R.drawable.firebrigade_icon, R.drawable.firebrigade_cover, "02-9898187", 0, 0));
-        lists.add(new List("Tongi", R.drawable.firebrigade_icon, R.drawable.firebrigade_cover, "02-9801070", 0, 0));
+
+        try {
+            lists.clear();
+
+            // Figure out the index of each column
+            int nameColumnIndex = cursor.getColumnIndex(DataContract.DataEntry.COLUMN_NAME);
+            int phoneColumnIndex = cursor.getColumnIndex(DataContract.DataEntry.COLUMN_PHONE);
+            int profileImageColumnIndex = cursor.getColumnIndex(DataContract.DataEntry.COLUMN_PROFILE_IMAGE);
+            int coverImageColumnIndex = cursor.getColumnIndex(DataContract.DataEntry.COLUMN_COVER_IMAGE);
+
+            // Iterate through all the returned rows in the cursor
+            while (cursor.moveToNext()) {
+
+                lists.add(new List(cursor.getString(nameColumnIndex),cursor.getBlob(profileImageColumnIndex),
+                        cursor.getBlob(coverImageColumnIndex), cursor.getString(phoneColumnIndex),
+                        null, null));
+            }
+        } finally {
+            cursor.close();
+        }
 
         LinearLayout header = (LinearLayout) findViewById(R.id.header);
         header.setVisibility(View.VISIBLE);
 
         ImageView headIcon = (ImageView) findViewById(R.id.header_icon);
-        headIcon.setImageResource(R.drawable.firebrigade_icon);
+        headIcon.setImageResource(R.drawable.fireservice_icon);
 
         TextView headerTitle = (TextView) findViewById(R.id.header_title);
         headerTitle.setText("Fire Brigade Services");
@@ -72,10 +103,10 @@ public class FireList extends AppCompatActivity {
     public String title(){
         return title;
     }
-    public int icon(){
+    public byte[] icon(){
         return icon;
     }
-    public int setCover(){
+    public byte[] setCover(){
         return cover;
     }
     public String setPhone(){

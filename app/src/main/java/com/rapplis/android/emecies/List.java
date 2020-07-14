@@ -4,13 +4,13 @@ import android.app.Activity;
 
 public class List {
     private String mgetText;
-    private int mgetIcon;
-    private int mgetCover;
+    private byte[] mgetIcon;
+    private byte[] mgetCover;
     private String mgetPhone;
-    private double mgetLat;
-    private double mgetLon;
+    private String mgetLat;
+    private String mgetLon;
 
-    public List(String getText, int getIcon, int getCover, String getPhone, double getLat, double getLon){
+    public List(String getText, byte[] getIcon, byte[] getCover, String getPhone, String getLat, String getLon){
         mgetText = getText;
         mgetIcon = getIcon;
         mgetCover = getCover;
@@ -21,19 +21,19 @@ public class List {
     public String getText() {
         return mgetText;
     }
-    public int getIcon(){
+    public byte[] getIcon(){
         return mgetIcon;
     }
-    public int getCover(){
+    public byte[] getCover(){
         return mgetCover;
     }
     public String getPhone() {
         return mgetPhone;
     }
-    public double getLat(){
+    public String getLat(){
         return mgetLat;
     }
-    public double getLon(){
+    public String getLon(){
         return mgetLon;
     }
 }

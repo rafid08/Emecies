@@ -2,7 +2,8 @@ package com.rapplis.android.emecies;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,6 @@ public class GridAdapter extends ArrayAdapter<List> {
         super(context, 0, words);
     }
 
-    @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View listItemView = convertView;
@@ -33,8 +33,12 @@ public class GridAdapter extends ArrayAdapter<List> {
         textview.setText(currentWord.getText());
 
         ImageView icon = (ImageView) listItemView.findViewById(R.id.icon);
-        icon.setImageResource(currentWord.getIcon());
+        icon.setImageBitmap(getImage(currentWord.getIcon()));
 
         return listItemView;
+    }
+
+    public static Bitmap getImage(byte[] image) {
+        return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
 }

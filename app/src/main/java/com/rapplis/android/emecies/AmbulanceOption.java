@@ -1,11 +1,13 @@
 package com.rapplis.android.emecies;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.fragment.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,8 +26,8 @@ public class AmbulanceOption extends FragmentActivity implements OnMapReadyCallb
 
     private GoogleMap mMap;
 
-    static double lat;
-    static double lon;
+    static String lat;
+    static String lon;
     static String label;
 
     @Override
@@ -33,26 +35,24 @@ public class AmbulanceOption extends FragmentActivity implements OnMapReadyCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.option);
 
-        AmbulanceList ambulance = new AmbulanceList();
+        final AmbulanceList ambulance = new AmbulanceList();
         final String titleText = ambulance.title();
-        int iconImage = ambulance.icon();
-        int coverImage = ambulance.setCover();
-        final String phoneNum = ambulance.setPhone();
-        lat = ambulance.setLat();
-        lon = ambulance.setLon();
         label = ambulance.title();
 
         TextView title = (TextView) findViewById(R.id.option_title);
         title.setText(titleText);
 
-        ImageView icon = (ImageView) findViewById(R.id.option_icon);
-        icon.setImageResource(iconImage);
+        TextView phone = findViewById(R.id.phone);
+        phone.setText(ambulance.setPhone());
 
-        TextView phone = (TextView) findViewById(R.id.phone);
-        phone.setText(phoneNum);
+        ImageView icon = findViewById(R.id.option_icon);
+        icon.setImageBitmap(getImage(ambulance.icon()));
 
-        ImageView cover = (ImageView) findViewById(R.id.cover);
-        cover.setImageResource(coverImage);
+        ImageView cover = findViewById(R.id.cover);
+        cover.setImageBitmap(getImage(ambulance.setCover()));
+
+        lat = ambulance.setLat();
+        lon = ambulance.setLon();
 
         Button openMaps = (Button) findViewById(R.id.map_launch);
         openMaps.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +74,7 @@ public class AmbulanceOption extends FragmentActivity implements OnMapReadyCallb
         call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent call = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNum));
+                Intent call = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + ambulance.setPhone()));
                 startActivity(call);
             }
         });
@@ -84,10 +84,14 @@ public class AmbulanceOption extends FragmentActivity implements OnMapReadyCallb
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(lat, lon);
-        mMap.addMarker(new MarkerOptions().position(sydney).title(label));
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(15.0f).build();
+        LatLng position = new LatLng(Double.parseDouble(lat), Double.parseDouble(lon));
+        mMap.addMarker(new MarkerOptions().position(position).title(label));
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(position).zoom(15.0f).build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
         mMap.moveCamera(cameraUpdate);
+    }
+
+    public static Bitmap getImage(byte[] image) {
+        return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
 }
