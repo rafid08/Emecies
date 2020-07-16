@@ -5,16 +5,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 
 import com.rapplis.android.emecies.Data.DataContract;
 import com.rapplis.android.emecies.Data.DatabaseHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class AmbulanceList extends AppCompatActivity {
     private static String title;
@@ -24,6 +31,9 @@ public class AmbulanceList extends AppCompatActivity {
     private static String lat;
     private static String lon;
 
+    GridAdapter listAdapter;
+    GridView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +41,10 @@ public class AmbulanceList extends AppCompatActivity {
 
         DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        GPSTracker gpsTracker = new GPSTracker(this);
+        final double myLat = gpsTracker.getLatitude();
+        final double myLon = gpsTracker.getLongitude();
 
         String[] projection = {
                 DataContract.DataEntry.COLUMN_NAME,
@@ -73,12 +87,24 @@ public class AmbulanceList extends AppCompatActivity {
             cursor.close();
         }
 
+        Collections.sort(lists, new Comparator<List>() {
+            @Override
+            public int compare(List lhs, List rhs) {
+                Double left = distance(myLat, myLon, Double.parseDouble(lhs.getLat()), Double.parseDouble(lhs.getLon()));
+                Double right = distance(myLat, myLon, Double.parseDouble(rhs.getLat()), Double.parseDouble(rhs.getLon()));
+                return left.compareTo(right);
+            }
+        });
+
         LinearLayout header = (LinearLayout) findViewById(R.id.header);
         header.setVisibility(View.GONE);
 
         GridAdapter adapter = new GridAdapter(this, lists);
 
-        GridView gridView = (GridView) findViewById(R.id.list);
+        GridView gridView = findViewById(R.id.list);
+
+        this.listView = gridView;
+        this.listAdapter = adapter;
 
         gridView.setAdapter(adapter);
 
@@ -98,6 +124,38 @@ public class AmbulanceList extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu, menu);
+
+        MenuItem myActionMenuItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView)myActionMenuItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (TextUtils.isEmpty(s)){
+                    listAdapter.filter("");
+                    listView.clearTextFilter();
+                }
+                else {
+                    listAdapter.filter(s);
+                }
+                return true;
+            }
+        });
+        return true;
+    }
+
+    public double distance(double x1, double y1, double x2, double y2) {
+        return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+    }
+
     public String title(){
         return title;
     }

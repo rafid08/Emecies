@@ -6,10 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 
 import com.rapplis.android.emecies.Data.DataContract;
 import com.rapplis.android.emecies.Data.DatabaseHelper;
@@ -22,6 +26,9 @@ public class CallCenterList extends AppCompatActivity {
     private static byte[] icon;
     private static byte[] cover;
     private static String phone;
+
+    GridAdapter listAdapter;
+    GridView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +75,15 @@ public class CallCenterList extends AppCompatActivity {
             cursor.close();
         }
 
-        LinearLayout header = (LinearLayout) findViewById(R.id.header);
+        LinearLayout header = findViewById(R.id.header);
         header.setVisibility(View.GONE);
 
         GridAdapter adapter = new GridAdapter(this, lists);
 
-        GridView gridView = (GridView) findViewById(R.id.list);
+        GridView gridView = findViewById(R.id.list);
+
+        this.listView = gridView;
+        this.listAdapter = adapter;
 
         gridView.setAdapter(adapter);
 
@@ -91,6 +101,34 @@ public class CallCenterList extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu, menu);
+
+        MenuItem myActionMenuItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView)myActionMenuItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (TextUtils.isEmpty(s)){
+                    listAdapter.filter("");
+                    listView.clearTextFilter();
+                }
+                else {
+                    listAdapter.filter(s);
+                }
+                return true;
+            }
+        });
+        return true;
+    }
+
     public String title(){
         return title;
     }

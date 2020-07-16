@@ -1,15 +1,19 @@
 package com.rapplis.android.emecies;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -22,8 +26,6 @@ import com.google.firebase.storage.StorageReference;
 import com.rapplis.android.emecies.Data.Data;
 import com.rapplis.android.emecies.Data.DataContract;
 import com.rapplis.android.emecies.Data.DatabaseHelper;
-
-import java.util.ArrayList;
 
 public class UpdateDataActivity extends AppCompatActivity {
 
@@ -39,9 +41,11 @@ public class UpdateDataActivity extends AppCompatActivity {
 
     StorageReference ambulanceStorageRef;
 
-    ProgressBar progressBar;
+    ProgressBar ambulanceProgressBar;
+    ProgressBar fireProgressBar;
+    ProgressBar policeProgressBar;
+    ProgressBar callProgressBar;
 
-    private ArrayList<Data> datas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,25 +60,24 @@ public class UpdateDataActivity extends AppCompatActivity {
         fireServiceRef = database.getReference().child("fire_service");
         ambulanceStorageRef = storage.getReference().child("ambulance");
 
-        progressBar = findViewById(R.id.progress);
+        ambulanceProgressBar = findViewById(R.id.ambulance_progress);
+        fireProgressBar = findViewById(R.id.fire_progress);
+        policeProgressBar = findViewById(R.id.police_progress);
+        callProgressBar = findViewById(R.id.call_progress);
 
-        datas = new ArrayList<>();
+        checkNetworkConnection();
 
         ambulanceRef.addValueEventListener(new ValueEventListener() {
+            int progress = 1;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                datas.clear();
-
-                TextView progressText = findViewById(R.id.progressText);
-                progressText.setText("\nUpdating Ambulance Datas");
-                int progress = 1;
+                final SQLiteDatabase db = dbHelper.getWritableDatabase();
+                db.execSQL("DELETE FROM "+ DataContract.DataEntry.AMBULANCE_TABLE_NAME);
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     try{
                         if(postSnapshot.exists()){
-                            progressBar.setMax((int) dataSnapshot.getChildrenCount());
+                            ambulanceProgressBar.setMax((int) dataSnapshot.getChildrenCount());
                             final Data data = postSnapshot.getValue(Data.class);
-
-                            final SQLiteDatabase db = dbHelper.getWritableDatabase();
 
                             data.getName();
                             StorageReference profileUri = storage.getReferenceFromUrl(data.getProfilePhotoUri());
@@ -103,22 +106,24 @@ public class UpdateDataActivity extends AppCompatActivity {
                                                     data.getLongitude(), data.getProfilePhotoUri(), data.getCoverPhotoUri(),
                                                     DataContract.DataEntry.AMBULANCE_TABLE_NAME)){
                                                 db.insert(DataContract.DataEntry.AMBULANCE_TABLE_NAME, null, values);
+                                                progress++;
+                                                ambulanceProgressBar.setProgress(progress);
+                                                if(ambulanceProgressBar.getProgress()==ambulanceProgressBar.getMax()){
+                                                    Intent i = new Intent(getApplicationContext(), Home.class);
+                                                    startActivity(i);
+                                                    finish();
+                                                }
                                             }
                                         }
                                     });
                                 }
                             });
-                            progress++;
-                            progressBar.setProgress(progress);
                         }
 
                     } catch (NullPointerException e){
                         e.printStackTrace();
                     }
                 }
-                Intent i = new Intent(getApplicationContext(), Home.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -126,20 +131,16 @@ public class UpdateDataActivity extends AppCompatActivity {
         });
 
         policeRef.addValueEventListener(new ValueEventListener() {
+            int progress = 1;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                datas.clear();
-
-                TextView progressText = findViewById(R.id.progressText);
-                progressText.setText("\nUpdating Police Station Datas");
-                int progress = 1;
+                final SQLiteDatabase db = dbHelper.getWritableDatabase();
+                db.execSQL("DELETE FROM "+ DataContract.DataEntry.POLICE_STATION_TABLE_NAME);
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     try{
                         if(postSnapshot.exists()){
-                            progressBar.setMax((int) dataSnapshot.getChildrenCount());
+                            policeProgressBar.setMax((int) dataSnapshot.getChildrenCount());
                             final Data data = postSnapshot.getValue(Data.class);
-
-                            final SQLiteDatabase db = dbHelper.getWritableDatabase();
 
                             data.getName();
                             StorageReference profileUri = storage.getReferenceFromUrl(data.getProfilePhotoUri());
@@ -167,22 +168,19 @@ public class UpdateDataActivity extends AppCompatActivity {
                                                     data.getLongitude(), data.getProfilePhotoUri(), data.getCoverPhotoUri(),
                                                     DataContract.DataEntry.POLICE_STATION_TABLE_NAME)){
                                                 db.insert(DataContract.DataEntry.POLICE_STATION_TABLE_NAME, null, values);
+                                                progress++;
+                                                policeProgressBar.setProgress(progress);
                                             }
                                         }
                                     });
                                 }
                             });
-                            progress++;
-                            progressBar.setProgress(progress);
                         }
 
                     } catch (NullPointerException e){
                         e.printStackTrace();
                     }
                 }
-                Intent i = new Intent(getApplicationContext(), Home.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -190,20 +188,16 @@ public class UpdateDataActivity extends AppCompatActivity {
         });
 
         callCenterRef.addValueEventListener(new ValueEventListener() {
+            int progress = 1;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                datas.clear();
-
-                TextView progressText = findViewById(R.id.progressText);
-                progressText.setText("\nUpdating Call Center Datas");
-                int progress = 1;
+                final SQLiteDatabase db = dbHelper.getWritableDatabase();
+                db.execSQL("DELETE FROM "+ DataContract.DataEntry.CALL_CENTER_TABLE_NAME);
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     try{
                         if(postSnapshot.exists()){
-                            progressBar.setMax((int) dataSnapshot.getChildrenCount());
+                            callProgressBar.setMax((int) dataSnapshot.getChildrenCount());
                             final Data data = postSnapshot.getValue(Data.class);
-
-                            final SQLiteDatabase db = dbHelper.getWritableDatabase();
 
                             data.getName();
                             StorageReference profileUri = storage.getReferenceFromUrl(data.getProfilePhotoUri());
@@ -229,22 +223,19 @@ public class UpdateDataActivity extends AppCompatActivity {
                                                     null, data.getProfilePhotoUri(), data.getCoverPhotoUri(),
                                                     DataContract.DataEntry.CALL_CENTER_TABLE_NAME)){
                                                 db.insert(DataContract.DataEntry.CALL_CENTER_TABLE_NAME, null, values);
+                                                progress++;
+                                                callProgressBar.setProgress(progress);
                                             }
                                         }
                                     });
                                 }
                             });
-                            progress++;
-                            progressBar.setProgress(progress);
                         }
 
                     } catch (NullPointerException e){
                         e.printStackTrace();
                     }
                 }
-                Intent i = new Intent(getApplicationContext(), Home.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -252,20 +243,16 @@ public class UpdateDataActivity extends AppCompatActivity {
         });
 
         fireServiceRef.addValueEventListener(new ValueEventListener() {
+            int progress = 1;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                datas.clear();
-
-                TextView progressText = findViewById(R.id.progressText);
-                progressText.setText("\nUpdating Fire service Datas");
-                int progress = 1;
+                final SQLiteDatabase db = dbHelper.getWritableDatabase();
+                db.execSQL("DELETE FROM "+ DataContract.DataEntry.FIRE_SERVICE_TABLE_NAME);
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     try{
                         if(postSnapshot.exists()){
-                            progressBar.setMax((int) dataSnapshot.getChildrenCount());
+                            fireProgressBar.setMax((int) dataSnapshot.getChildrenCount());
                             final Data data = postSnapshot.getValue(Data.class);
-
-                            final SQLiteDatabase db = dbHelper.getWritableDatabase();
 
                             data.getName();
                             StorageReference profileUri = storage.getReferenceFromUrl(data.getProfilePhotoUri());
@@ -284,35 +271,80 @@ public class UpdateDataActivity extends AppCompatActivity {
                                             ContentValues values = new ContentValues();
                                             values.put(DataContract.DataEntry.COLUMN_NAME, data.getName());
                                             values.put(DataContract.DataEntry.COLUMN_PHONE, data.getPhone());
+                                            values.put(DataContract.DataEntry.COLUMN_LATITUDE, data.getLatitude());
+                                            values.put(DataContract.DataEntry.COLUMN_LONGITUDE, data.getLongitude());
                                             values.put(DataContract.DataEntry.COLUMN_PROFILE_IMAGE, profilePhoto);
                                             values.put(DataContract.DataEntry.COLUMN_COVER_IMAGE, cover);
 
-                                            if (!checkDuplicate(data.getName(), data.getPhone(), null,
-                                                    null, data.getProfilePhotoUri(), data.getCoverPhotoUri(),
+                                            if (!checkDuplicate(data.getName(), data.getPhone(), data.getLatitude(),
+                                                    data.getLongitude(), data.getProfilePhotoUri(), data.getCoverPhotoUri(),
                                                     DataContract.DataEntry.FIRE_SERVICE_TABLE_NAME)){
                                                 db.insert(DataContract.DataEntry.FIRE_SERVICE_TABLE_NAME, null, values);
+                                                progress++;
+                                                fireProgressBar.setProgress(progress);
                                             }
                                         }
                                     });
                                 }
                             });
-                            progress++;
-                            progressBar.setProgress(progress);
+                        }
+
+                        if(ambulanceProgressBar.getProgress()==ambulanceProgressBar.getMax() &&
+                                policeProgressBar.getProgress()==policeProgressBar.getMax() &&
+                                fireProgressBar.getProgress()==fireProgressBar.getMax() &&
+                                callProgressBar.getProgress()==callProgressBar.getMax()){
+                            finish();
                         }
 
                     } catch (NullPointerException e){
                         e.printStackTrace();
                     }
                 }
-                Intent i = new Intent(getApplicationContext(), Home.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        new AlertDialog.Builder(getApplicationContext())
+                .setTitle("Are sure you want to exit?")
+                .setMessage("Please wait until the one time download is done. The app will be closed if you exit")
+                .setPositiveButton("wait", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setNegativeButton("exit", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    private void checkNetworkConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        assert cm != null;
+        boolean connected = cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+        if(!connected){
+            new AlertDialog.Builder(UpdateDataActivity.this)
+                    .setTitle("No Internet Access")
+                    .setMessage("This one time download requires internet connection. Please connect to the Internet")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            checkNetworkConnection();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+    }
+
 
     public boolean checkDuplicate(String name, String phone, String latitude, String longitude, String profileImageUri,
                                   String coverImageUri, String tableName){

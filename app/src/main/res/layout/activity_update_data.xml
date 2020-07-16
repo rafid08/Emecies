@@ -1,27 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context=".UpdateDataActivity">
 
-    <TextView
-        android:id="@+id/progressText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:layout_alignTop="@id/progress"
-        tools:text="\nUpdating Ambulance" />
-
     <ProgressBar
-        android:id="@+id/progress"
+        android:id="@+id/ambulance_progress"
         style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="64dp"
-        android:layout_marginRight="64dp"
-        android:layout_centerVertical="true"/>
+        android:progress="0"
+        android:layout_marginRight="64dp" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/ambulance_progressText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:text="Updating Ambulance Services"
+        android:layout_marginBottom="16dp"/>
+
+    <ProgressBar
+        android:id="@+id/fire_progress"
+        style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:progress="0"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="64dp" />
+
+    <TextView
+        android:id="@+id/fire_progressText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:text="Updating Fire Services"
+        android:layout_marginBottom="16dp" />
+
+    <ProgressBar
+        android:id="@+id/police_progress"
+        style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="64dp" />
+
+    <TextView
+        android:id="@+id/police_progressText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:text="Updating Police Stations"
+        android:layout_marginBottom="16dp"/>
+
+    <ProgressBar
+        android:id="@+id/call_progress"
+        style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="64dp" />
+
+    <TextView
+        android:id="@+id/call_progressText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:text="Updating Call Centers" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="This one ime download may take upto 2 minutes"
+        android:layout_marginTop="24dp"
+        android:padding="8dp"/>
+
+</LinearLayout>
