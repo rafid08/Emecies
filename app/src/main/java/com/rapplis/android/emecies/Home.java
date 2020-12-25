@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import com.google.android.material.navigation.NavigationView;
 import com.rapplis.android.emecies.Data.DataContract;
@@ -43,6 +44,7 @@ public class Home extends AppCompatActivity
         }
         if(isDataEmpty(DataEntry.AMBULANCE_TABLE_NAME) || isDataEmpty(DataEntry.FIRE_SERVICE_TABLE_NAME) ||
                 isDataEmpty(DataEntry.POLICE_STATION_TABLE_NAME) || isDataEmpty(DataEntry.CALL_CENTER_TABLE_NAME)){
+            Log.v("tag", "msg");
             Intent i = new Intent(getApplicationContext(), UpdateDataActivity.class);
             startActivity(i);
             finish();
